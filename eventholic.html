@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventholic - Your Gateway to Event Opportunities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-tertiary: #6b7280;
+            --border-color: rgba(139, 92, 246, 0.15);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-hover-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --accent-color: #7c3aed;
+            --gradient-1: rgba(139, 92, 246, 0.08);
+            --gradient-2: rgba(139, 92, 246, 0.05);
+            --grid-color: rgba(139, 92, 246, 0.03);
+            --shadow-light: rgba(0, 0, 0, 0.02);
+            --shadow-medium: rgba(0, 0, 0, 0.08);
+            --shadow-strong: rgba(139, 92, 246, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111827;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
+            --border-color: rgba(139, 92, 246, 0.3);
+            --card-bg: rgba(17, 24, 39, 0.5);
+            --card-hover-bg: rgba(17, 24, 39, 0.8);
+            --input-bg: rgba(17, 24, 39, 0.5);
+            --header-bg: rgba(10, 10, 10, 0.95);
+            --accent-color: #a78bfa;
+            --gradient-1: rgba(139, 92, 246, 0.15);
+            --gradient-2: rgba(139, 92, 246, 0.1);
+            --grid-color: rgba(139, 92, 246, 0.05);
+            --shadow-light: rgba(0, 0, 0, 0.3);
+            --shadow-medium: rgba(0, 0, 0, 0.5);
+            --shadow-strong: rgba(139, 92, 246, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, var(--gradient-1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--gradient-1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--gradient-2) 0%, transparent 50%);
+            z-index: -1;
+            transition: background 0.3s ease;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.4;
+            transition: background-image 0.3s ease;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        .logo {
+            background: var(--bg-primary);
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-medium);
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .theme-toggle:hover {
+            background: var(--card-hover-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.2rem;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.2s forwards;
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.15);
+            backdrop-filter: blur(10px);
+            color: var(--accent-color);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 4.5rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+            color: var(--text-primary);
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.4s forwards;
+        }
+
+        .hero h1 .accent {
+            font-weight: 600;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            margin-bottom: 3rem;
+            opacity: 0;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1.2s ease-out 0.6s forwards;
+        }
+
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .section-title .accent {
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 0.8s forwards;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px var(--shadow-light);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            background: var(--card-hover-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 12px 24px var(--shadow-strong);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .form-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1s forwards;
+            box-shadow: 0 8px 16px var(--shadow-medium);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            color: var(--text-primary);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 1.2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .success-message {
+            background: rgba(72, 187, 120, 0.15);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            color: #68d391;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fc8181;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 968px) {
+            nav {
+                padding: 0 2rem;
+            }
+
+            .logo {
+                padding: 0.8rem 1.8rem;
+            }
+
+            .logo img {
+                height: 60px;
+            }
+
+            .theme-toggle {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            .logo {
+                padding: 0.7rem 1.5rem;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+
+            .theme-toggle span {
+                display: none;
+            }
+
+            .theme-toggle {
+                padding: 0.6rem;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            .form-section {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                padding: 0.6rem 1rem;
+            }
+
+            .logo img {
+                height: 45px;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .form-section {
+                padding: 2rem 1rem;
+            }
+
+            .hero {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-texture"></div>
+    <div class="grid-overlay"></div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="eventholic-logo_-_Copy-removebg-preview.png" alt="Eventholic" id="logoImg">
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                <span class="icon">🌓</span>
+                <span>Dark Mode</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="coming-soon-badge">🚀 LAUNCHING SOON</div>
+            <h1>Where <span class="accent">opportunity</span><br>meets flexibility</h1>
+            <p class="hero-description">
+                The premier platform connecting talented individuals with exceptional event opportunities across UAE. 
+                Professional growth. Flexible schedules. Unforgettable experiences.
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Why <span class="accent">Eventholic</span></h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Flexible Freedom</h3>
+                <p>Work on your terms. Choose opportunities that align with your schedule and interests.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Diverse Events</h3>
+                <p>Access corporate functions, community gatherings, concerts, races, and everything in between across UAE.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Matching</h3>
+                <p>Get matched with opportunities that fit your profile instantly. No endless applications.</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="form-title">Secure Your Early Access</h2>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+971 XX XXX XXXX">
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Your Skills & Strengths</label>
+                    <textarea id="skills" name="skills" required placeholder="E.g., Customer service, communication, languages spoken, technical skills, etc."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Previous Event/Work Experience</label>
+                    <textarea id="experience" name="experience" required placeholder="Tell us about any relevant experience (student activities, part-time work, volunteering, etc.)"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Secure Your Spot</button>
+                
+                <div class="message success-message" id="successMessage">
+                    ✓ Registration successful! You're on the list. We'll notify you as soon as we launch.
+                </div>
+                
+                <div class="message error-message" id="errorMessage">
+                    Something went wrong. Please try again or contact us directly.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Eventholic. Launching Soon in UAE.</p>
+    </footer>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx22xkQ6LseQVfXGeMn-Qb37ypioT_mv9ImjIWMn7iyxME_Eeh-4RbKRrk6NFmhPAUouw/exec';
+
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const btn = document.querySelector('.theme-toggle');
+            const icon = btn.querySelector('.icon');
+            const text = btn.querySelector('span:not(.icon)');
+            const logoImg = document.getElementById('logoImg');
+            
+            if (newTheme === 'dark') {
+                icon.textContent = '☀️';
+                if (text) text.textContent = 'Light Mode';
+                logoImg.src = 'eventholic-logo_-_Copy-removebg-preview.png';
+            } else {
+                icon.textContent = '🌓';
+                if (text) text.textContent = 'Dark Mode';
+                logoImg.src = 'ChatGPT_Image_Oct_22__2025__08_10_04_PM-removebg-preview (1).png';
+            }
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const logoImg = document.getElementById('logoImg');
+        
+        if (savedTheme === 'dark') {
+            const btn = document.querySelector('.theme-toggle');
+            const icon = btn.querySelector('.icon');
+            const text = btn.querySelector('span:not(.icon)');
+            icon.textContent = '☀️';
+            if (text) text.textContent = 'Light Mode';
+            logoImg.src = 'ChatGPT_Image_Oct_22__2025__08_10_04_PM-removebg-preview (1).png';
+        }
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                skills: document.getElementById('skills').value,
+                experience: document.getElementById('experience').value
+            };
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                successMsg.style.display = 'block';
+                this.reset();
+                
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorMsg.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 5000);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Secure Your Spot';
+            }
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.padding = '1rem 0';
+                header.style.boxShadow = '0 2px 10px var(--shadow-medium)';
+            } else {
+                header.style.padding = '1.5rem 0';
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
