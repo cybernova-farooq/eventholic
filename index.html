@@ -618,7 +618,7 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkQqGo7s1gyZ7ns977OTqn4LpAnbDCQL2QqsjY7HYRRmYFy2EC4wtCMqMg6vTkX0hz/exec';
 
-        // Theme toggle
+     // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -635,11 +635,11 @@
             if (newTheme === 'dark') {
                 icon.textContent = '☀️';
                 if (text) text.textContent = 'Light Mode';
-                logoImg.src = 'eventholic-logo_-_Copy-removebg-preview.png';
+                logoImg.src = 'logo-dark.png';
             } else {
                 icon.textContent = '🌓';
                 if (text) text.textContent = 'Dark Mode';
-                logoImg.src = 'ChatGPT_Image_Oct_22__2025__08_10_04_PM-removebg-preview (1).png';
+                logoImg.src = 'logo-light.png';
             }
         }
 
@@ -654,7 +654,7 @@
             const text = btn.querySelector('span:not(.icon)');
             icon.textContent = '☀️';
             if (text) text.textContent = 'Light Mode';
-            logoImg.src = 'ChatGPT_Image_Oct_22__2025__08_10_04_PM-removebg-preview (1).png';
+            logoImg.src = 'logo-dark.png';
         }
 
         // Form submission
@@ -675,6 +675,7 @@
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
+                country: document.getElementById('country').value,
                 skills: document.getElementById('skills').value,
                 experience: document.getElementById('experience').value
             };
@@ -723,9 +724,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
