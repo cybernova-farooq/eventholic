@@ -558,7 +558,7 @@
             </div>
         </div>
 
-        <div class="form-section">
+    <div class="form-section">
             <h2 class="form-title">Secure Your Early Access</h2>
             <form id="registrationForm">
                 <div class="form-group">
@@ -572,12 +572,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="+971 XX XXX XXXX">
-                </div>
-                 <div class="form-group">
                     <label for="country">Country of Residence</label>
-                    <select id="country" name="country" required>
+                    <select id="country" name="country" required onchange="updatePhonePlaceholder()">
                         <option value="">Select your country of residence</option>
                         <option value="UAE">United Arab Emirates</option>
                         <option value="Saudi Arabia">Saudi Arabia</option>
@@ -586,6 +582,11 @@
                         <option value="Qatar">Qatar</option>
                         <option value="Bahrain">Bahrain</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+971 XX XXX XXXX">
                 </div>
 
                 <div class="form-group">
@@ -618,7 +619,24 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwplEICda4jHgONXnw8nLOiuHpLZARhRuxUaNE_do5jRrn_14CJUuh8I2-bFM_ETpEA2A/exec';
 
-     // Theme toggle
+    // Update phone placeholder based on country selection
+        function updatePhonePlaceholder() {
+            const country = document.getElementById('country').value;
+            const phoneInput = document.getElementById('phone');
+            
+            const phoneCodes = {
+                'UAE': '+971 XX XXX XXXX',
+                'Saudi Arabia': '+966 XX XXX XXXX',
+                'Kuwait': '+965 XXXX XXXX',
+                'Oman': '+968 XXXX XXXX',
+                'Qatar': '+974 XXXX XXXX',
+                'Bahrain': '+973 XXXX XXXX'
+            };
+            
+            phoneInput.placeholder = phoneCodes[country] || '+XXX XX XXX XXXX';
+        }
+
+        // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -724,4 +742,3 @@
     </script>
 </body>
 </html>
-
